@@ -24,9 +24,11 @@ public class MainMenu extends javax.swing.JFrame {
     /**
      * Creates new form mainmenu
      */
+    AdminPanel ap = new AdminPanel();
     public MainMenu() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
         roomCombo.removeAllItems();
         try {
             Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
@@ -65,10 +67,15 @@ public class MainMenu extends javax.swing.JFrame {
         roomCombo = new javax.swing.JComboBox<>();
         adminButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        logOffButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         roomCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -89,10 +96,10 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Log off");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        logOffButton.setText("Log off");
+        logOffButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                logOffButtonMouseClicked(evt);
             }
         });
 
@@ -110,7 +117,7 @@ public class MainMenu extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(adminButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(logOffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -123,7 +130,7 @@ public class MainMenu extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(adminButton, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(logOffButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(55, Short.MAX_VALUE))
         );
 
@@ -132,16 +139,18 @@ public class MainMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void logOffButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logOffButtonMouseClicked
         // TODO add your handling code here:
         new StartMenu().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_logOffButtonMouseClicked
 
     private void adminButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminButtonMouseClicked
         // TODO add your handling code here:
         new Admin().setVisible(true);
+        //AdminPanel ap = new AdminPanel();
         this.dispose();
+        
     }//GEN-LAST:event_adminButtonMouseClicked
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
@@ -159,6 +168,11 @@ public class MainMenu extends javax.swing.JFrame {
     private void okButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_okButtonMouseEntered
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_formComponentShown
 
     /**
      * @param args the command line arguments
@@ -200,8 +214,8 @@ public class MainMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton adminButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton logOffButton;
     private javax.swing.JButton okButton;
     private javax.swing.JComboBox<String> roomCombo;
     // End of variables declaration//GEN-END:variables

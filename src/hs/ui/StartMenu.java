@@ -137,12 +137,39 @@ public class StartMenu extends javax.swing.JFrame {
 
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
-        if(passwordField.getText().isEmpty()){
-                    new MainMenu().setVisible(true);
-                    this.dispose();
-                }else{
-                    
-                }
+
+        try {
+
+            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+            Connection con = DriverManager.getConnection(url);
+            Statement stmt = null;
+            ResultSet rs = null;
+
+            // SQL query command
+            String SQL = "SELECT id, password FROM users where id = '" + userComboBox.getSelectedItem().toString() + "'";
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(SQL);
+            rs.next();
+  
+            if (userComboBox.getSelectedItem().toString().equals(rs.getString("id")) &&
+                    passwordField.getText().equals(rs.getString("password"))) {
+                System.out.println("true");
+                System.out.println(passwordField.getText());
+                new MainMenu().setVisible(true);
+                this.dispose();
+            }else{
+                System.out.println("False");
+            }
+
+            con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.toString());
+        } catch (ClassNotFoundException cE) {
+            System.out.println("Class Not Found Exception: "
+                    + cE.toString());
+        }
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void userComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userComboBoxActionPerformed
