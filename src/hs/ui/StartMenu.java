@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -161,6 +162,7 @@ public class StartMenu extends javax.swing.JFrame {
                 this.dispose();
             }else{
                 System.out.println("False");
+                JOptionPane.showMessageDialog(this, "Password incorrect");
             }
 
             con.close();
