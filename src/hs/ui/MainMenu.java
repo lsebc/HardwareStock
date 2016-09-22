@@ -85,6 +85,11 @@ public class MainMenu extends javax.swing.JFrame {
                 adminButtonMouseClicked(evt);
             }
         });
+        adminButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adminButtonActionPerformed(evt);
+            }
+        });
 
         okButton.setText("OK");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -152,9 +157,9 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void adminButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminButtonMouseClicked
         // TODO add your handling code here:
-        new Admin().setVisible(true);
-        //AdminPanel ap = new AdminPanel();
-        this.dispose();
+//        new Admin().setVisible(true);
+//        //AdminPanel ap = new AdminPanel();
+//        this.dispose();
         
     }//GEN-LAST:event_adminButtonMouseClicked
 
@@ -196,6 +201,13 @@ public class MainMenu extends javax.swing.JFrame {
         //jPanel1.setVisible(false);
         //rp.setVisible(true);
     }//GEN-LAST:event_okButtonActionPerformed
+
+    private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
+        // TODO add your handling code here:
+        new Admin().setVisible(true);
+        //AdminPanel ap = new AdminPanel();
+        this.dispose();
+    }//GEN-LAST:event_adminButtonActionPerformed
 
     /**
      * @param args the command line arguments
