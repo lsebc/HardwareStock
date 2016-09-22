@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -70,7 +71,6 @@ public class MainMenu extends javax.swing.JFrame {
         logOffButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
@@ -160,19 +160,18 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
         // TODO add your handling code here:
-        Container contentPane = this.getContentPane();
-        contentPane.removeAll();
-        contentPane.repaint();
-        contentPane.revalidate();
-        setLayout(new BorderLayout());
-        contentPane.add(new RoomPanel());
-        contentPane.repaint();
-        contentPane.revalidate();
+//        Container contentPane = this.getContentPane();
+//        contentPane.removeAll();
+//        contentPane.repaint();
+//        contentPane.revalidate();
+//        setLayout(new BorderLayout());
+//        contentPane.add(new RoomPanel());
+//        contentPane.repaint();
+//        contentPane.revalidate();
     }//GEN-LAST:event_okButtonMouseClicked
 
     private void okButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseEntered
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_okButtonMouseEntered
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -181,8 +180,21 @@ public class MainMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_formComponentShown
 
     private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        // TODO add your handling code here:
-        
+        // TODO add your handling code here
+        Container contentPane = this.getContentPane();
+        contentPane.removeAll();
+        contentPane.repaint();
+        contentPane.revalidate();
+        //setLayout(new BorderLayout());
+        contentPane.add(new RoomPanel());
+        contentPane.setPreferredSize(new Dimension(1000,500));
+        this.pack();
+        this.setLocationRelativeTo(null);
+        contentPane.repaint();
+        contentPane.revalidate();
+        //RoomPanel rp = new RoomPanel();
+        //jPanel1.setVisible(false);
+        //rp.setVisible(true);
     }//GEN-LAST:event_okButtonActionPerformed
 
     /**
