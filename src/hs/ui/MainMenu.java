@@ -95,6 +95,11 @@ public class MainMenu extends javax.swing.JFrame {
                 okButtonMouseEntered(evt);
             }
         });
+        okButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okButtonActionPerformed(evt);
+            }
+        });
 
         logOffButton.setText("Log off");
         logOffButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -167,12 +172,18 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void okButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseEntered
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_okButtonMouseEntered
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         // TODO add your handling code here:
 
     }//GEN-LAST:event_formComponentShown
+
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_okButtonActionPerformed
 
     /**
      * @param args the command line arguments
