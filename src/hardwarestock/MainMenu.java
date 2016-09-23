@@ -29,7 +29,7 @@ public class MainMenu extends javax.swing.JFrame {
     public MainMenu() {
         initComponents();
         this.setLocationRelativeTo(null);
-        
+
         roomCombo.removeAllItems();
         try {
             Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
@@ -160,7 +160,7 @@ public class MainMenu extends javax.swing.JFrame {
 //        new Admin().setVisible(true);
 //        //AdminPanel ap = new AdminPanel();
 //        this.dispose();
-        
+
     }//GEN-LAST:event_adminButtonMouseClicked
 
     private void okButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_okButtonMouseClicked
@@ -192,7 +192,7 @@ public class MainMenu extends javax.swing.JFrame {
         contentPane.revalidate();
         //setLayout(new BorderLayout());
         contentPane.add(new RoomPanel());
-        contentPane.setPreferredSize(new Dimension(1000,500));
+        contentPane.setPreferredSize(new Dimension(1000, 500));
         this.pack();
         this.setLocationRelativeTo(null);
         contentPane.repaint();
@@ -242,7 +242,7 @@ public class MainMenu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainMenu().setVisible(true);
+                    new MainMenu().setVisible(true);
             }
         });
     }
