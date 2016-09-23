@@ -20,7 +20,7 @@ import javax.swing.JComboBox;
  *
  * @author ls
  */
-public class MainMenu extends javax.swing.JFrame {
+public class MainMenu extends javax.swing.JFrame{
 
     /**
      * Creates new form mainmenu
@@ -188,10 +188,12 @@ public class MainMenu extends javax.swing.JFrame {
         // TODO add your handling code here
         Container contentPane = this.getContentPane();
         contentPane.removeAll();
+        //jPanel1.setVisible(false);
         contentPane.repaint();
         contentPane.revalidate();
         //setLayout(new BorderLayout());
-        contentPane.add(new RoomPanel());
+        String rSelected = roomCombo.getSelectedItem().toString();
+        contentPane.add(new RoomPanel(rSelected));
         contentPane.setPreferredSize(new Dimension(1000, 500));
         this.pack();
         this.setLocationRelativeTo(null);

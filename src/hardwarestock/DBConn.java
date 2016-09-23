@@ -40,8 +40,15 @@ public class DBConn {
 
         while (rs.next()) {
             Vector<String> room = new Vector<String>();
-            room.add(rs.getString("room_no")); //Empid
+            //room.add(rs.getString("room_no")); //Empid
             room.add(rs.getString("pc_id")); //name
+            room.add(rs.getString("pcname"));
+            room.add(rs.getString("cpu"));
+            room.add(rs.getString("mobo"));
+            room.add(rs.getString("memory"));
+            room.add(rs.getString("gpu"));
+            room.add(rs.getString("storage"));
+            
             roomVector.add(room);
         }
 

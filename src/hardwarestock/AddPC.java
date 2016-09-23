@@ -5,6 +5,11 @@
  */
 package hardwarestock;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author ls
@@ -17,6 +22,29 @@ public class AddPC extends javax.swing.JPanel {
     public AddPC() {
         initComponents();
     }
+    
+//    public void addAccount() throws SQLException {
+//        try {
+//            DBConn dbc = new DBConn();
+//            Connection conn = dbc.dbConnection();
+//            String s = "INSERT into UserAccounts (Username,Password,Status) VALUES (?,?,'Offline')";
+//            PreparedStatement ps = conn.prepareStatement(s);
+//            ps.setString(1, jTextField1.getText());
+//            ps.setString(2, jPasswordField1.getText()); 
+//            ps.executeUpdate();
+//
+//            jTextField1.setText("");
+//            jPasswordField1.setText("");
+//            jPasswordField2.setText("");
+//
+//            jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ebsw/images/success.png")));
+//
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, e);
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.

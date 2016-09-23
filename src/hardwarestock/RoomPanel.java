@@ -8,6 +8,15 @@ package hardwarestock;
 import java.awt.Container;
 import java.util.Vector;
 import hardwarestock.DBConn;
+import java.awt.Dimension;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -21,21 +30,51 @@ public class RoomPanel extends javax.swing.JPanel {
     private Vector<Vector<String>> data; //used for data from database
     private Vector<String> header; //used to store data header
 
-    public RoomPanel() {
-        try{
-        DBConn dbc = new DBConn();
-        data = dbc.getPcInfo("select * from PC");
+    public RoomPanel(String roomSelected) {
+        //rpPanel.setText(roomSelected);
+        try {
+            DBConn dbc = new DBConn();
+            data = dbc.getPcInfo("select * from PC where room_No = '" + roomSelected + "'");
 
-        //create header for the table
-        header = new Vector<String>();
-        header.add("room_NO"); //Empid
-        header.add("pc_Id"); // employee name
-
-        initComponents();
-        }catch (Exception e){
+            //create header for the table
+            header = new Vector<String>();
+            //header.add("Room Number"); //Empid
+            header.add("PC ID"); // employee name
+            header.add("PC name");
+            header.add("CPU");
+            header.add("Motherboard");
+            header.add("Memory");
+            header.add("Gpu");
+            header.add("Storage");
+            initComponents();
+            rpPanel.setText("Room: " + roomSelected);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+//    public void addAccount() throws SQLException {
+//        try {
+//            DBConn dbc = new DBConn();
+//            Connection conn = dbc.dbConnection();
+//            String s = "INSERT into UserAccounts (Username,Password,Status) VALUES (?,?,'Offline')";
+//            PreparedStatement ps = conn.prepareStatement(s);
+//            ps.setString(1, jTextField1.getText());
+//            ps.setString(2, jPasswordField1.getText()); 
+//            ps.executeUpdate();
+//
+//            jTextField1.setText("");
+//            jPasswordField1.setText("");
+//            jPasswordField2.setText("");
+//
+//            jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ebsw/images/success.png")));
+//
+//        } catch (Exception e) {
+//            JOptionPane.showMessageDialog(null, e);
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,8 +85,11 @@ public class RoomPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        rpPanel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -57,18 +99,36 @@ public class RoomPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.BorderLayout());
 
+        rpPanel.setText("jLabel1");
+        jPanel1.add(rpPanel);
+
+        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
-        jButton5.setText("jButton5");
+        jButton5.setText("Add PC");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton5);
 
-        jButton6.setText("jButton6");
+        jButton1.setText("Add Room");
+        jPanel2.add(jButton1);
+
+        jButton6.setText("Modify");
         jPanel2.add(jButton6);
 
-        jButton7.setText("jButton7");
+        jButton7.setText("Delete");
         jPanel2.add(jButton7);
 
-        jButton8.setText("jButton8");
+        jButton8.setText("Return to main menu");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton8);
 
         add(jPanel2, java.awt.BorderLayout.PAGE_END);
@@ -85,15 +145,28 @@ public class RoomPanel extends javax.swing.JPanel {
         add(jPanel3, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        new MainMenu().setVisible(true);
+        javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton5ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel rpPanel;
     // End of variables declaration//GEN-END:variables
 }
