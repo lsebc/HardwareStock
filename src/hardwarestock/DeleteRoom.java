@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hs.ui;
+package hardwarestock;
 
 /**
  *
  * @author ls
  */
-public class AddPC extends javax.swing.JPanel {
+public class DeleteRoom extends javax.swing.JPanel {
 
     /**
-     * Creates new form AddPC
+     * Creates new form deleteRoom
      */
-    public AddPC() {
+    public DeleteRoom() {
         initComponents();
     }
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hs.ui;
+package hardwarestock;
 
 /**
  *
@@ -71,7 +71,7 @@ public class RoomOverview extends javax.swing.JFrame {
 
         getContentPane().add(jPanel3, java.awt.BorderLayout.CENTER);
 
-        jPanel4.setLayout(new java.awt.GridLayout());
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         jButton5.setText("jButton5");
         jPanel4.add(jButton5);
