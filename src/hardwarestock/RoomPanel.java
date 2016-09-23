@@ -6,6 +6,8 @@
 package hardwarestock;
 
 import java.awt.Container;
+import java.util.Vector;
+import hardwarestock.DBConn;
 
 /**
  *
@@ -16,8 +18,23 @@ public class RoomPanel extends javax.swing.JPanel {
     /**
      * Creates new form RoomPanel
      */
+    private Vector<Vector<String>> data; //used for data from database
+    private Vector<String> header; //used to store data header
+
     public RoomPanel() {
+        try{
+        DBConn dbc = new DBConn();
+        data = dbc.getPcInfo("select * from PC");
+
+        //create header for the table
+        header = new Vector<String>();
+        header.add("room_NO"); //Empid
+        header.add("pc_Id"); // employee name
+
         initComponents();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -59,15 +76,7 @@ public class RoomPanel extends javax.swing.JPanel {
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9"
-            }
+            data, header
         ));
         jScrollPane2.setViewportView(jTable1);
 
