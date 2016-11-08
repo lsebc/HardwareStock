@@ -7,9 +7,16 @@ package hardwarestock;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
@@ -23,12 +30,44 @@ public class Admin extends javax.swing.JFrame {
     public Admin() {
         initComponents();
         this.setLocationRelativeTo(null);
+        update();
+//        adminUserComboBox.removeAllItems();
+//        try {
+////            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+////            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+////                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+////            Connection con = DriverManager.getConnection(url);
+//            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+//            Statement stmt = null;
+//            ResultSet rs = null;
+//
+//            // SQL query command
+//            String SQL = "SELECT * FROM USERS";
+//            stmt = con.createStatement();
+//            rs = stmt.executeQuery(SQL);
+//            while (rs.next()) {
+//                adminUserComboBox.addItem(rs.getString("id"));
+//            }
+//            con.close();
+//        } catch (SQLException e) {
+//            System.out.println("SQL Exception: " + e.toString());
+//        } /*catch (ClassNotFoundException cE) {
+//            System.out.println("Class Not Found Exception: "
+//                    + cE.toString());
+//        }*/
+    }
+
+    public void update() {
         adminUserComboBox.removeAllItems();
         try {
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
-                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
-            Connection con = DriverManager.getConnection(url);
+//            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+//            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+//                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+//            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            Connection con = new DBConn().dbConnection();
             Statement stmt = null;
             ResultSet rs = null;
 
@@ -42,9 +81,8 @@ public class Admin extends javax.swing.JFrame {
             con.close();
         } catch (SQLException e) {
             System.out.println("SQL Exception: " + e.toString());
-        } catch (ClassNotFoundException cE) {
-            System.out.println("Class Not Found Exception: "
-                    + cE.toString());
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
         }
     }
 
@@ -84,6 +122,11 @@ public class Admin extends javax.swing.JFrame {
         });
 
         deleteButton.setText("Delete User");
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
 
         userLabel.setText("User:");
 
@@ -137,12 +180,107 @@ public class Admin extends javax.swing.JFrame {
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         // TODO add your handling code here:
+        String aSelected = adminUserComboBox.getSelectedItem().toString();
+        JTextField currentUserField = new JTextField(5);
+        JPasswordField newUPassField = new JPasswordField(5);
+        JPanel myPanel = new JPanel();
+        myPanel.add(new JLabel("Current Admin:"));
+        myPanel.add(currentUserField);
+        myPanel.add(Box.createVerticalStrut(15)); // a spacer
+        myPanel.add(new JLabel("New Password:"));
+        myPanel.add(newUPassField);
+        try {
+//            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+//            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+//                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            currentUserField.setText(aSelected);
+            currentUserField.setEditable(false);
+            newUPassField.setEchoChar('*');
+            int result = JOptionPane.showConfirmDialog(null, myPanel,
+                    "Current Admin Credentials", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION && String.valueOf(newUPassField.getPassword()).isEmpty()) {
+                System.out.println("No password entered, changes not made");
+            }
+            if (result == JOptionPane.CANCEL_OPTION) {
+                System.out.println("No changes made");
+            } else if (result == JOptionPane.OK_OPTION && !String.valueOf(newUPassField.getPassword()).isEmpty()) {
+                int updateUser = JOptionPane.showConfirmDialog(null, "Update user: " + aSelected + "?");
+                if (updateUser == JOptionPane.OK_OPTION) {
+//                    String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+//                    Connection con = DriverManager.getConnection(url);
+                    Connection con = new DBConn().dbConnection();
+                    Statement s = con.createStatement();
+                    ResultSet rs = s.executeQuery(
+                            "SELECT * FROM users where id ='" + aSelected + "'");
+                    if (rs.next()) {
+                        PreparedStatement pstmt = (PreparedStatement) con.prepareStatement("update users set password=? where id = '" + aSelected + "'");
+                        //System.out.println(String.valueOf(newUPassField.getPassword()));
+                        //pstmt.setString(1, currentUserField.getText());
+                        pstmt.setString(1, String.valueOf(newUPassField.getPassword()));
+                        pstmt.executeUpdate();
+                        pstmt.close();
+                    }
+                    System.out.println("Admin updated");
+                } else {
+                    System.out.println("Admin not updated");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.toString());
+        } catch (Exception e) {
+            System.out.println("Exception:" + e);
+        }
+        this.update();
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
         // TODO add your handling code here:
-        AddAdmin aa = new AddAdmin(this, rootPaneCheckingEnabled);
-        aa.setVisible(rootPaneCheckingEnabled);
+        JTextField newUserField = new JTextField(5);
+        JPasswordField newUPassField = new JPasswordField(5);
+        newUPassField.setEchoChar('*');
+        JPanel myPanel = new JPanel();
+
+        myPanel.add(new JLabel("New Admin:"));
+        myPanel.add(newUserField);
+        myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+        myPanel.add(new JLabel("Set Password:"));
+        myPanel.add(newUPassField);
+        try {
+//            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+//            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+//                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,
+                    "Please enter new Admin Credentials", JOptionPane.OK_CANCEL_OPTION);
+//            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            Connection con = new DBConn().dbConnection();
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(
+                    "SELECT * FROM users where id ='" + newUserField.getText() + "'");
+            if (result == JOptionPane.CANCEL_OPTION) {
+                //Do nothing
+            } else if (newUserField.getText().isEmpty()) {
+                System.out.println("Please enter a valid user");
+            } else if (newUPassField.getPassword().length <= 0) {
+                System.out.println("Please enter a valid password");
+            } else if (rs.next()) {
+                System.out.println("admin already exists");
+            } else if (result == JOptionPane.OK_OPTION) {
+                System.out.println("new admin");
+                PreparedStatement pstmt = (PreparedStatement) con.prepareStatement("insert into users(id, password) values(?,?)");
+                pstmt.setString(1, newUserField.getText());
+                pstmt.setString(2, String.valueOf(newUPassField.getPassword()));
+                pstmt.executeUpdate();
+                pstmt.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.toString());
+        } catch (Exception e) {
+            System.out.println("Exception:" + e);
+        }
+        this.update();
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void mMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mMenuButtonActionPerformed
@@ -150,6 +288,33 @@ public class Admin extends javax.swing.JFrame {
         this.dispose();
         new MainMenu().setVisible(true);
     }//GEN-LAST:event_mMenuButtonActionPerformed
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        // TODO add your handling code here:
+        String aSelected = adminUserComboBox.getSelectedItem().toString();
+        int delUser = JOptionPane.showConfirmDialog(rootPane, "Delete user: " + aSelected + "?");
+        try {
+//            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            Connection con = new DBConn().dbConnection();
+            Statement s = null;
+            ResultSet rs = null;
+
+            // SQL query command
+            s = con.createStatement();
+            rs = s.executeQuery(
+                    "SELECT * FROM users where id ='" + aSelected + "'");
+            if (rs.next()) {
+                if (delUser == JOptionPane.YES_OPTION) {
+                    s.executeUpdate("delete from users where id = " + "'" + aSelected + "'");
+                    con.close();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+        this.update();
+    }//GEN-LAST:event_deleteButtonActionPerformed
 
     /**
      * @param args the command line arguments

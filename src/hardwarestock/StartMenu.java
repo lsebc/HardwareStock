@@ -25,11 +25,15 @@ public class StartMenu extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         userComboBox.removeAllItems();
+        passwordField.setEchoChar('*');
         try {
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
-                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
-            Connection con = DriverManager.getConnection(url);
+            //Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+            //String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+            //String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+            //        + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+            //Connection con = DriverManager.getConnection(url);
+            //DBConn dbc = new DBConn();
+            Connection con = new DBConn().dbConnection();
             Statement stmt = null;
             ResultSet rs = null;
 
@@ -43,10 +47,12 @@ public class StartMenu extends javax.swing.JFrame {
             con.close();
         } catch (SQLException e) {
             System.out.println("SQL Exception: " + e.toString());
-        } catch (ClassNotFoundException cE) {
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }/* catch (ClassNotFoundException cE) {
             System.out.println("Class Not Found Exception: "
                     + cE.toString());
-        }
+        }*/
     }
 
     /**
@@ -60,9 +66,9 @@ public class StartMenu extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         loginButton = new javax.swing.JButton();
-        passwordField = new javax.swing.JTextField();
         userComboBox = new javax.swing.JComboBox<>();
         cancelButton = new javax.swing.JButton();
+        passwordField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,12 +76,6 @@ public class StartMenu extends javax.swing.JFrame {
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginButtonActionPerformed(evt);
-            }
-        });
-
-        passwordField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordFieldActionPerformed(evt);
             }
         });
 
@@ -104,13 +104,13 @@ public class StartMenu extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(53, 53, 53)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(userComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(userComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(cancelButton, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordField))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -132,19 +132,17 @@ public class StartMenu extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordFieldActionPerformed
-
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         // TODO add your handling code here:
 
         try {
 
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
-                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
-            Connection con = DriverManager.getConnection(url);
+//            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+//            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+//                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+//            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            Connection con = new DBConn().dbConnection();
             Statement stmt = null;
             ResultSet rs = null;
 
@@ -153,14 +151,13 @@ public class StartMenu extends javax.swing.JFrame {
             stmt = con.createStatement();
             rs = stmt.executeQuery(SQL);
             rs.next();
-  
-            if (userComboBox.getSelectedItem().toString().equals(rs.getString("id")) &&
-                    passwordField.getText().equals(rs.getString("password"))) {
+
+            if (userComboBox.getSelectedItem().toString().equals(rs.getString("id"))
+                    && String.valueOf(passwordField.getPassword()).equals(rs.getString("password"))) {
                 System.out.println("true");
-                System.out.println(passwordField.getText());
                 new MainMenu().setVisible(true);
                 this.dispose();
-            }else{
+            } else {
                 System.out.println("False");
                 JOptionPane.showMessageDialog(this, "Password incorrect");
             }
@@ -168,9 +165,8 @@ public class StartMenu extends javax.swing.JFrame {
             con.close();
         } catch (SQLException e) {
             System.out.println("SQL Exception: " + e.toString());
-        } catch (ClassNotFoundException cE) {
-            System.out.println("Class Not Found Exception: "
-                    + cE.toString());
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
         }
     }//GEN-LAST:event_loginButtonActionPerformed
 
@@ -227,7 +223,7 @@ public class StartMenu extends javax.swing.JFrame {
     private javax.swing.JButton cancelButton;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton loginButton;
-    private javax.swing.JTextField passwordField;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JComboBox<String> userComboBox;
     // End of variables declaration//GEN-END:variables
 }

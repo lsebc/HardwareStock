@@ -25,10 +25,12 @@ public class AdminPanel extends javax.swing.JPanel {
         //this.setLocationRelativeTo(null);
         adminUserComboBox.removeAllItems();
         try {
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
-                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+            //Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+            //String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+            //        + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+            String url="jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
             Connection con = DriverManager.getConnection(url);
+            //Connection con = DriverManager.getConnection(url);
             Statement stmt = null;
             ResultSet rs = null;
 
@@ -42,10 +44,10 @@ public class AdminPanel extends javax.swing.JPanel {
             con.close();
         } catch (SQLException e) {
             System.out.println("SQL Exception: " + e.toString());
-        } catch (ClassNotFoundException cE) {
-            System.out.println("Class Not Found Exception: "
-                    + cE.toString());
-        }
+        } //catch (ClassNotFoundException cE) {
+            //System.out.println("Class Not Found Exception: "
+            //        + cE.toString());
+        //}
     }
 
     /**

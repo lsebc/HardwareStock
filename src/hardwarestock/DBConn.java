@@ -23,40 +23,43 @@ import javax.swing.table.DefaultTableModel;
 public class DBConn {
 
     public Connection dbConnection() throws Exception {
-        Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-        String myDB = "jdbc:odbc:Driver={Microsoft Access Driver "
-                + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
-        return DriverManager.getConnection(myDB);
+        //Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+        //String myDB = "jdbc:odbc:Driver={Microsoft Access Driver "
+        //        + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+        String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+        Connection con = DriverManager.getConnection(url);
+        //return DriverManager.getConnection(url);
+        return con;
 
     }
 
-    public Vector getPcInfo(String s) throws Exception {
-
-        Vector<Vector<String>> roomVector = new Vector<Vector<String>>();
-
-        Connection conn = dbConnection();
-        PreparedStatement ps = conn.prepareStatement(s);
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            Vector<String> room = new Vector<String>();
-            //room.add(rs.getString("room_no")); //Empid
-            room.add(rs.getString("pc_id")); //name
-            room.add(rs.getString("pcname"));
-            room.add(rs.getString("cpu"));
-            room.add(rs.getString("mobo"));
-            room.add(rs.getString("memory"));
-            room.add(rs.getString("gpu"));
-            room.add(rs.getString("storage"));
-            
-            roomVector.add(room);
-        }
-
-        /*Close the connection after use (MUST)*/
-        if (conn != null) {
-            conn.close();
-        }
-
-        return roomVector;
-    }
+//    public Vector getPcInfo(String s) throws Exception {
+//
+//        Vector<Vector<String>> roomVector = new Vector<Vector<String>>();
+//
+//        Connection conn = dbConnection();
+//        PreparedStatement ps = conn.prepareStatement(s);
+//        ResultSet rs = ps.executeQuery();
+//
+//        while (rs.next()) {
+//            Vector<String> room = new Vector<String>();
+//            //room.add(rs.getString("room_no")); //Empid
+//            room.add(rs.getString("pc_id")); //name
+//            room.add(rs.getString("pcname"));
+//            room.add(rs.getString("cpu"));
+//            room.add(rs.getString("mobo"));
+//            room.add(rs.getString("memory"));
+//            room.add(rs.getString("gpu"));
+//            room.add(rs.getString("storage"));
+//
+//            roomVector.add(room);
+//        }
+//
+//        /*Close the connection after use (MUST)*/
+//        if (conn != null) {
+//            conn.close();
+//        }
+//
+//        return roomVector;
+//    }
 }

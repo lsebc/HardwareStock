@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import org.hsqldb.lib.tar.RB;
 
 /**
  *
@@ -119,30 +120,47 @@ public class AddAdmin extends javax.swing.JDialog {
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         // TODO add your handling code here:
         try {
-            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
-                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+//            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+//            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+//                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
             Connection con = DriverManager.getConnection(url);
-            PreparedStatement pstmt = (PreparedStatement) con.prepareStatement("insert into users(id, password) values(?,?)");
-            //Statement stmt = con.createStatement();
-            pstmt.setString(1, newUserTextfield.getText());
-            pstmt.setString(2, setPasswordField.getText());
-            pstmt.executeUpdate();
-            pstmt.close();
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(
+                    "SELECT * FROM users where id ='" + newUserTextfield.getText() + "'");
+            if (newUserTextfield.getText().isEmpty()) {
+                System.out.println("Please enter a valid user");
+            } else if (setPasswordField.getText().isEmpty()) {
+                System.out.println("Please enter a valid password");
+            } else if (rs.next()) {
+                System.out.println("admin already exists");
+            } else {
+                System.out.println("new admin");
+                PreparedStatement pstmt = (PreparedStatement) con.prepareStatement("insert into users(id, password) values(?,?)");
+                pstmt.setString(1, newUserTextfield.getText());
+                pstmt.setString(2, setPasswordField.getText());
+                pstmt.executeUpdate();
+                pstmt.close();
+                Admin a = new Admin();
+                //this.dispose();
+                getOwner().dispose();
+                a.setVisible(true);
+            }
         } catch (SQLException e) {
             System.out.println("SQL Exception: " + e.toString());
-            System.out.println("User already exists");
-        } catch (ClassNotFoundException cE) {
+        }
+        /*catch (ClassNotFoundException cE) {
             System.out.println("Class Not Found Exception: "
                     + cE.toString());
-        }
-    
+        }*/
+
     }//GEN-LAST:event_confirmButtonActionPerformed
 
-/**
- * @param args the command line arguments
- */
-public static void main(String args[]) {
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -153,28 +171,24 @@ public static void main(String args[]) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
-                
 
-}
+                }
             }
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(AddAdmin.class
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (InstantiationException ex) {
+        } catch (InstantiationException ex) {
             java.util.logging.Logger.getLogger(AddAdmin.class
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (IllegalAccessException ex) {
+        } catch (IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(AddAdmin.class
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
 
-} catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(AddAdmin.class
-.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -185,7 +199,7 @@ public static void main(String args[]) {
                 AddAdmin dialog = new AddAdmin(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
-        public void windowClosing(java.awt.event.WindowEvent e) {
+                    public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
                 });

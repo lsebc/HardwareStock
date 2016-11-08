@@ -33,9 +33,7 @@ public class RoomPanel extends javax.swing.JPanel {
     public RoomPanel(String roomSelected) {
         //rpPanel.setText(roomSelected);
         try {
-            DBConn dbc = new DBConn();
-            data = dbc.getPcInfo("select * from PC where room_No = '" + roomSelected + "'");
-
+            data = getPcInfo("select * from PC where room_No = '" + roomSelected + "'");
             //create header for the table
             header = new Vector<String>();
             //header.add("Room Number"); //Empid
@@ -51,6 +49,35 @@ public class RoomPanel extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public Vector getPcInfo(String s) throws Exception {
+
+        Vector<Vector<String>> roomVector = new Vector<Vector<String>>();
+        Connection con = new DBConn().dbConnection();
+        PreparedStatement ps = con.prepareStatement(s);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Vector<String> room = new Vector<String>();
+            //room.add(rs.getString("room_no")); //Empid
+            room.add(rs.getString("pc_id")); //name
+            room.add(rs.getString("pcname"));
+            room.add(rs.getString("cpu"));
+            room.add(rs.getString("mobo"));
+            room.add(rs.getString("memory"));
+            room.add(rs.getString("gpu"));
+            room.add(rs.getString("storage"));
+
+            roomVector.add(room);
+        }
+
+        /*Close the connection after use (MUST)*/
+        if (con != null) {
+            con.close();
+        }
+
+        return roomVector;
     }
 
 //    public void addAccount() throws SQLException {
@@ -75,7 +102,6 @@ public class RoomPanel extends javax.swing.JPanel {
 //        }
 //
 //    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,7 +115,6 @@ public class RoomPanel extends javax.swing.JPanel {
         rpPanel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -113,9 +138,6 @@ public class RoomPanel extends javax.swing.JPanel {
             }
         });
         jPanel2.add(jButton5);
-
-        jButton1.setText("Add Room");
-        jPanel2.add(jButton1);
 
         jButton6.setText("Modify");
         jPanel2.add(jButton6);
@@ -157,7 +179,6 @@ public class RoomPanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
