@@ -9,6 +9,7 @@ import java.awt.Container;
 import java.util.Vector;
 import hardwarestock.DBConn;
 import java.awt.Dimension;
+import java.nio.channels.SelectableChannel;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +18,7 @@ import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -41,9 +43,10 @@ public class RoomPanel extends javax.swing.JPanel {
             header.add("PC name");
             header.add("CPU");
             header.add("Motherboard");
+            header.add("GPU");
             header.add("Memory");
-            header.add("Gpu");
             header.add("Storage");
+            header.add("NIC");
             initComponents();
             rpPanel.setText("Room: " + roomSelected);
         } catch (Exception e) {
@@ -65,9 +68,10 @@ public class RoomPanel extends javax.swing.JPanel {
             room.add(rs.getString("pcname"));
             room.add(rs.getString("cpu"));
             room.add(rs.getString("mobo"));
-            room.add(rs.getString("memory"));
             room.add(rs.getString("gpu"));
+            room.add(rs.getString("memory"));
             room.add(rs.getString("storage"));
+            room.add(rs.getString("network_Card"));
 
             roomVector.add(room);
         }
@@ -79,6 +83,34 @@ public class RoomPanel extends javax.swing.JPanel {
 
         return roomVector;
     }
+    
+//    public void update() {
+//        jTable1.removeAll();
+//        try {
+////            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+////            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+////                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+////            Connection con = DriverManager.getConnection(url);
+////            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+////            Connection con = DriverManager.getConnection(url);
+//            Connection con = new DBConn().dbConnection();
+//            Statement stmt = null;
+//            ResultSet rs = null;
+//
+//            // SQL query command
+//            String SQL = "SELECT * FROM ROOM";
+//            stmt = con.createStatement();
+//            rs = stmt.executeQuery(SQL);
+//            while (rs.next()) {
+//                roomCombo.addItem(rs.getString("room_No"));
+//            }
+//            con.close();
+//        } catch (SQLException e) {
+//            System.out.println("SQL Exception: " + e.toString());
+//        } catch (Exception e) {
+//            System.out.println("Exception: " + e);
+//        }
+//    }
 
 //    public void addAccount() throws SQLException {
 //        try {
@@ -114,7 +146,7 @@ public class RoomPanel extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         rpPanel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
+        addPCButton = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
@@ -131,13 +163,13 @@ public class RoomPanel extends javax.swing.JPanel {
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));
 
-        jButton5.setText("Add PC");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        addPCButton.setText("Add PC");
+        addPCButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                addPCButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton5);
+        jPanel2.add(addPCButton);
 
         jButton6.setText("Modify");
         jPanel2.add(jButton6);
@@ -173,13 +205,14 @@ public class RoomPanel extends javax.swing.JPanel {
         javax.swing.SwingUtilities.getWindowAncestor(this).dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void addPCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPCButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+//       jTable1.remove();
+    }//GEN-LAST:event_addPCButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton addPCButton;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;

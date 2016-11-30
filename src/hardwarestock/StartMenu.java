@@ -5,6 +5,7 @@
  */
 package hardwarestock;
 
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -98,6 +99,12 @@ public class StartMenu extends javax.swing.JFrame {
             }
         });
 
+        passwordField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                passwordFieldKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -182,6 +189,45 @@ public class StartMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_cancelButtonMouseClicked
+
+    private void passwordFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordFieldKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            try {
+
+//            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+//            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+//                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+//            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+                Connection con = new DBConn().dbConnection();
+                Statement stmt = null;
+                ResultSet rs = null;
+
+                // SQL query command
+                String SQL = "SELECT id, password FROM users where id = '" + userComboBox.getSelectedItem().toString() + "'";
+                stmt = con.createStatement();
+                rs = stmt.executeQuery(SQL);
+                rs.next();
+
+                if (userComboBox.getSelectedItem().toString().equals(rs.getString("id"))
+                        && String.valueOf(passwordField.getPassword()).equals(rs.getString("password"))) {
+                    System.out.println("true");
+                    new MainMenu().setVisible(true);
+                    this.dispose();
+                } else {
+                    System.out.println("False");
+                    JOptionPane.showMessageDialog(this, "Password incorrect");
+                }
+
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("SQL Exception: " + e.toString());
+            } catch (Exception e) {
+                System.out.println("Exception: " + e);
+            }
+        }
+    }//GEN-LAST:event_passwordFieldKeyPressed
 
     /**
      * @param args the command line arguments

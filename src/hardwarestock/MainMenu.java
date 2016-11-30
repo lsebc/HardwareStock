@@ -10,11 +10,18 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
@@ -25,12 +32,14 @@ public class MainMenu extends javax.swing.JFrame {
     /**
      * Creates new form mainmenu
      */
-    AdminPanel ap = new AdminPanel();
-
     public MainMenu() {
         initComponents();
         this.setLocationRelativeTo(null);
+        update();
 
+    }
+    
+    public void update() {
         roomCombo.removeAllItems();
         try {
 //            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
@@ -56,10 +65,6 @@ public class MainMenu extends javax.swing.JFrame {
         } catch (Exception e) {
             System.out.println("Exception: " + e);
         }
-        /*catch (ClassNotFoundException cE) {
-            System.out.println("Class Not Found Exception: "
-                    + cE.toString());
-        }*/
     }
 
     /**
@@ -73,10 +78,13 @@ public class MainMenu extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         roomCombo = new javax.swing.JComboBox<>();
-        adminButton = new javax.swing.JButton();
         okButton = new javax.swing.JButton();
+        addRoomButton = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        adminButton = new javax.swing.JButton();
         logOffButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        delRoomButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -84,20 +92,22 @@ public class MainMenu extends javax.swing.JFrame {
                 formComponentShown(evt);
             }
         });
+        addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                formComponentAdded(evt);
+            }
+            public void componentRemoved(java.awt.event.ContainerEvent evt) {
+                formComponentRemoved(evt);
+            }
+        });
+
+        jPanel1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentHidden(java.awt.event.ComponentEvent evt) {
+                jPanel1ComponentHidden(evt);
+            }
+        });
 
         roomCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        adminButton.setText("Admin");
-        adminButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                adminButtonMouseClicked(evt);
-            }
-        });
-        adminButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                adminButtonActionPerformed(evt);
-            }
-        });
 
         okButton.setText("OK");
         okButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -114,6 +124,25 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
+        addRoomButton.setText("Add Room");
+        addRoomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addRoomButtonActionPerformed(evt);
+            }
+        });
+
+        adminButton.setText("Admin");
+        adminButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adminButtonMouseClicked(evt);
+            }
+        });
+        adminButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adminButtonActionPerformed(evt);
+            }
+        });
+
         logOffButton.setText("Log off");
         logOffButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -121,7 +150,32 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Add Room");
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(adminButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(logOffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(adminButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(logOffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jLabel1.setText("Room Management");
+
+        delRoomButton.setText("Delete Room");
+        delRoomButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                delRoomButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -129,34 +183,40 @@ public class MainMenu extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(roomCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(addRoomButton, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
-                    .addComponent(roomCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(adminButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(logOffButton, javax.swing.GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE))
-                .addGap(23, 23, 23))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(okButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(delRoomButton, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(roomCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(adminButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logOffButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addGap(19, 19, 19)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(roomCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(okButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(addRoomButton, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                            .addComponent(delRoomButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_START);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -170,7 +230,7 @@ public class MainMenu extends javax.swing.JFrame {
     private void adminButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminButtonMouseClicked
         // TODO add your handling code here:
 //        new Admin().setVisible(true);
-//        //AdminPanel ap = new AdminPanel();
+
 //        this.dispose();
 
     }//GEN-LAST:event_adminButtonMouseClicked
@@ -219,9 +279,93 @@ public class MainMenu extends javax.swing.JFrame {
     private void adminButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adminButtonActionPerformed
         // TODO add your handling code here:
         new Admin().setVisible(true);
-        //AdminPanel ap = new AdminPanel();
         this.dispose();
     }//GEN-LAST:event_adminButtonActionPerformed
+
+    private void addRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRoomButtonActionPerformed
+        // TODO add your handling code here:
+        JTextField newRoomField = new JTextField(5);
+        JPanel myPanel = new JPanel();
+
+        myPanel.add(new JLabel("New Room:"));
+        myPanel.add(newRoomField);
+        try {
+//            Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+//            String url = "jdbc:odbc:Driver={Microsoft Access Driver "
+//                    + "(*.mdb, *.accdb)};DBQ=C:\\NetbeansProject\\AccessDB\\HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            int result = JOptionPane.showConfirmDialog(null, myPanel,
+                    "Please enter the Room number", JOptionPane.OK_CANCEL_OPTION);
+//            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            Connection con = new DBConn().dbConnection();
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery(
+                    "SELECT * FROM ROOM where room_No ='" + newRoomField.getText() + "'");
+            if (result == JOptionPane.CANCEL_OPTION) {
+                //Do nothing
+            } else if (newRoomField.getText().isEmpty()) {
+                System.out.println("Please enter a valid Room Number");
+            } else if (rs.next()) {
+                System.out.println("Room already exists");
+            } else if (result == JOptionPane.OK_OPTION) {
+                System.out.println("new room");
+                PreparedStatement pstmt = (PreparedStatement) con.prepareStatement("insert into room(room_No) values(?)");
+                pstmt.setString(1, newRoomField.getText());
+                pstmt.executeUpdate();
+                pstmt.close();
+            }
+                    con.close();
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.toString());
+        } catch (Exception e) {
+            System.out.println("Exception:" + e);
+        }
+
+        this.update();
+    }//GEN-LAST:event_addRoomButtonActionPerformed
+
+    private void jPanel1ComponentHidden(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1ComponentHidden
+        // TODO add your handling code here:
+        System.out.println("Test hide");
+    }//GEN-LAST:event_jPanel1ComponentHidden
+
+    private void formComponentRemoved(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_formComponentRemoved
+        // TODO add your handling code here:
+        System.out.println("Test hide");
+    }//GEN-LAST:event_formComponentRemoved
+
+    private void formComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_formComponentAdded
+        // TODO add your handling code here:
+        System.out.println("Test hide");
+    }//GEN-LAST:event_formComponentAdded
+
+    private void delRoomButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delRoomButtonActionPerformed
+        // TODO add your handling code here:
+        String aSelected = roomCombo.getSelectedItem().toString();
+        int delUser = JOptionPane.showConfirmDialog(rootPane, "Delete user: " + aSelected + "?");
+        try {
+//            String url = "jdbc:ucanaccess://T:/(software)/HardwareStock/AccessDB/HardwareStock.accdb";
+//            Connection con = DriverManager.getConnection(url);
+            Connection con = new DBConn().dbConnection();
+            Statement s = null;
+            ResultSet rs = null;
+
+            // SQL query command
+            s = con.createStatement();
+            rs = s.executeQuery(
+                    "SELECT * FROM Room where room_No ='" + aSelected + "'");
+            if (rs.next()) {
+                if (delUser == JOptionPane.YES_OPTION) {
+                    s.executeUpdate("delete from Room where room_No = " + "'" + aSelected + "'");
+                    con.close();
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Exception: " + e);
+        }
+        this.update();
+    }//GEN-LAST:event_delRoomButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,9 +406,12 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addRoomButton;
     private javax.swing.JButton adminButton;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton delRoomButton;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JButton logOffButton;
     private javax.swing.JButton okButton;
     private javax.swing.JComboBox<String> roomCombo;

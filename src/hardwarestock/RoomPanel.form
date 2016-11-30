@@ -44,12 +44,12 @@
         <Property name="rows" type="int" value="1"/>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="jButton5">
+        <Component class="javax.swing.JButton" name="addPCButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="Add PC"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton5ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addPCButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton6">
@@ -151,6 +151,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_SerializeTo" type="java.lang.String" value="RoomPanel_jTable1"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
